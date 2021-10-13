@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import uuid from "react-uuid";
 import axios from "axios";
-import DocumentRequestForm  from "./DocumentRequestForm";
-import DocumentRequest  from "./DocumentRequest";
-
+import DocumentRequestForm from "./DocumentRequestForm";
+import DocumentRequest from "./DocumentRequest";
+import Document from "./UploadedDocument";
 
 const RMDashBoard = () => {
   const [showDocRequestForm, setShowDocRequestForm] = useState(false);
   const [documentRequests, setDocumentRequests] = useState([]);
+  const [documents, setDocuments] = useState([]);
+
   useEffect(() => {
     let url = "http://localhost:8000/api/document_requests/";
     axios
@@ -22,6 +24,21 @@ const RMDashBoard = () => {
       })
       .catch((err) => console.log(err));
   }, [documentRequests]);
+
+  useEffect(() => {
+    let url = "http://localhost:8000/api/documents/";
+    axios
+      .get(url, {
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setDocuments(res.data);
+      })
+      .catch((err) => console.log(err));
+  }, [documents]);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -44,7 +61,6 @@ const RMDashBoard = () => {
         console.log(res.data);
       })
       .catch((err) => console.log(err));
-    
   };
 
   return (
@@ -53,18 +69,39 @@ const RMDashBoard = () => {
       <article>Relationship Manager Dashboard</article>
       <table>
         <thead>
+          Documents Uploaded
           <tr>
             <td>Name: </td>
-            <td>Uploaded: </td>
+            <td>Uploaded on: </td>
+          </tr>
+        </thead>
+        <tbody>
+          {documents.length > 0 &&
+            documents.map((document, idx) => (
+              <Document
+                key={`doc-request-${uuid()}`}
+                document={document}
+                number={idx + 1}
+              />
+            ))}
+        </tbody>
+      </table>
+      <table>
+        <thead>
+          Documents Requested(Not yet uploaded)
+          <tr>
+            <td>Number: </td>
+            <td>Name: </td>
             <td>Requested on: </td>
           </tr>
         </thead>
         <tbody>
           {documentRequests.length > 0 &&
-            documentRequests.map((documentRequest) => (
+            documentRequests.map((documentRequest, idx) => (
               <DocumentRequest
                 key={`doc-request-${uuid()}`}
                 documentRequest={documentRequest}
+                number={idx + 1}
               />
             ))}
         </tbody>
@@ -74,7 +111,9 @@ const RMDashBoard = () => {
           Request a document from client
         </button>
       </div>
-      {showDocRequestForm && <DocumentRequestForm handleSubmit={handleSubmit} />}
+      {showDocRequestForm && (
+        <DocumentRequestForm handleSubmit={handleSubmit} />
+      )}
     </div>
   );
 };

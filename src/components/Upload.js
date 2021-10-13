@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import docRequest from "./DocumentRequest";
 
 const Upload = ({handleSubmit}) => {
   const [name, setName] = useState("");
+  const [number, setNumber] = useState(1);
   const [file, setFile] = useState(null);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
+  };
+
+  const handleNumberChange = (e) => {
+    setNumber(e.target.value);
   };
   
   const handleFileChange = (e) => {
@@ -14,7 +20,17 @@ const Upload = ({handleSubmit}) => {
 
   return (
     <div className="App">
-      <form onSubmit={(e)=>handleSubmit(e, name, file)}>
+      <form onSubmit={(e)=>handleSubmit(e, number, name, file)}>
+      <p>
+      Choose the document number (in the requested list) eg 1, 2...
+          <input
+            type="text"
+            placeholder="Choose the document number (in the requested list) eg 1, 2..."
+            value={number}
+            onChange={handleNumberChange}
+            required
+          />
+        </p>
         <p>
           <input
             type="text"
