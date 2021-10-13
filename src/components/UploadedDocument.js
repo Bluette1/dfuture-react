@@ -3,7 +3,7 @@ const Document = ({ document }) => {
   return (
     <tr>
       <td>{name}</td>
-      <td>{uploaded_at}</td>
+      <td>{new Date(uploaded_at).toDateString()}</td>
     </tr>
   );
 };

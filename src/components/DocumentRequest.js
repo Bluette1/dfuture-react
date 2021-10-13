@@ -3,7 +3,7 @@ const docRequest = ({documentRequest, number}) => {
   return <tr>
     <td>{number}</td>
     <td>{name}</td>
-    <td>{created_at}</td>
+    <td>{new Date(created_at).toDateString()}</td>
   </tr>
 }
 
