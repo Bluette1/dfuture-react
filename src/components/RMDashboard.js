@@ -67,6 +67,9 @@ const RMDashBoard = () => {
     <div>
       {" "}
       <article>Relationship Manager Dashboard</article>
+      <section>
+        <h4>Client information</h4>
+      </section>
       <table>
         <thead>
           Documents Uploaded
