@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import uuid from "react-uuid";
 import axios from "axios";
-import DocumentRequestForm  from "./DocumentRequestForm";
+import Upload  from "./Upload";
 import DocumentRequest  from "./DocumentRequest";
 
 
-const RMDashBoard = () => {
-  const [showDocRequestForm, setShowDocRequestForm] = useState(false);
+const ClientDashBoard = () => {
+  const [showUploadForm, setShowUploadForm] = useState(false);
   const [documentRequests, setDocumentRequests] = useState([]);
   useEffect(() => {
     let url = "http://localhost:8000/api/document_requests/";
@@ -25,32 +25,40 @@ const RMDashBoard = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    setShowDocRequestForm(true);
+    setShowUploadForm(true);
   };
 
-  const handleSubmit = (e, name) => {
+  const handleSubmit = (e, name, file) => {
     e.preventDefault();
-    setShowDocRequestForm(false);
+    setShowUploadForm(false);
     let form_data = new FormData();
+    form_data.append("file", file, file.name);
     form_data.append("name", name);
-    let url = "http://localhost:8000/api/document_requests/";
+    let url = "http://localhost:8000/api/documents/";
     axios
       .post(url, form_data, {
         headers: {
           "content-type": "multipart/form-data",
         },
-      })
+      })  
       .then((res) => {
         console.log(res.data);
+        const id = documentRequests[0].id
+        let url = `http://localhost:8000/api/document_requests/${id}`;
+        axios
+          .delete(url, {
+            headers: {
+              "content-type": "application/json",
+            },
+          })  
       })
       .catch((err) => console.log(err));
-    
   };
 
   return (
     <div>
       {" "}
-      <article>Relationship Manager Dashboard</article>
+      <article>Client Dashboard</article>
       <table>
         <thead>
           <tr>
@@ -71,12 +79,12 @@ const RMDashBoard = () => {
       </table>
       <div>
         <button type="submit" onClick={handleClick}>
-          Request a document from client
+          Upload a requested document
         </button>
       </div>
-      {showDocRequestForm && <DocumentRequestForm handleSubmit={handleSubmit} />}
+      {showUploadForm && <Upload handleSubmit={handleSubmit} />}
     </div>
   );
 };
 
-export default RMDashBoard;
+export default ClientDashBoard;

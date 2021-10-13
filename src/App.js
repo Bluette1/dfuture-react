@@ -1,10 +1,12 @@
 import { Router, Switch, Route } from "react-router-dom";
 import ClientDashboard from "./components/ClientDashboard";
 import RMDashboard from "./components/RMDashboard";
+import { createBrowserHistory } from 'history';
 
+const history = createBrowserHistory();
 const App = () => {
   return (
-    <Router>
+    <Router history={history}>
       <div>
         <nav className="navbar navbar-expand-lg navbar-dark bg-navbar d-flex justify-content-around justify-content-lg-between">
         <h2>DFuture Web App</h2>

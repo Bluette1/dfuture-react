@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 const RequestDocument = ({handleSubmit}) => {
   const [name, setName] = useState("");
@@ -10,7 +9,7 @@ const RequestDocument = ({handleSubmit}) => {
 
   return (
     <div className="App">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e)=> handleSubmit(e, name)}>
         <p>
           <input
             type="text"
