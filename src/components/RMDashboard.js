@@ -4,6 +4,9 @@ import axios from "axios";
 import DocumentRequestForm from "./DocumentRequestForm";
 import DocumentRequest from "./DocumentRequest";
 import Document from "./UploadedDocument";
+import { httpProtocol, host, port } from '../env.variables';
+
+const baseURL = `${httpProtocol}://${host}:${port}`;
 
 const RMDashBoard = () => {
   const [showDocRequestForm, setShowDocRequestForm] = useState(false);
@@ -11,7 +14,7 @@ const RMDashBoard = () => {
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
-    let url = "http://localhost:8000/api/document_requests/";
+    let url = `${baseURL}/api/document_requests/`;
     axios
       .get(url, {
         headers: {
@@ -26,7 +29,7 @@ const RMDashBoard = () => {
   }, [documentRequests]);
 
   useEffect(() => {
-    let url = "http://localhost:8000/api/documents/";
+    let url = `${baseURL}/api/documents/`;
     axios
       .get(url, {
         headers: {
@@ -50,7 +53,7 @@ const RMDashBoard = () => {
     setShowDocRequestForm(false);
     let form_data = new FormData();
     form_data.append("name", name);
-    let url = "http://localhost:8000/api/document_requests/";
+    let url = `${baseURL}/api/document_requests/`;
     axios
       .post(url, form_data, {
         headers: {

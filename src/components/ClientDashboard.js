@@ -3,12 +3,15 @@ import uuid from "react-uuid";
 import axios from "axios";
 import Upload from "./Upload";
 import DocumentRequest from "./DocumentRequest";
+import { httpProtocol, host, port } from '../env.variables';
+
+const baseURL = `${httpProtocol}://${host}:${port}`;
 
 const ClientDashBoard = () => {
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [documentRequests, setDocumentRequests] = useState([]);
   useEffect(() => {
-    let url = "http://localhost:8000/api/document_requests/";
+    let url = `${baseURL}/api/document_requests/`;
     axios
       .get(url, {
         headers: {
@@ -33,7 +36,7 @@ const ClientDashBoard = () => {
     let form_data = new FormData();
     form_data.append("file", file, file.name);
     form_data.append("name", name);
-    let url = "http://localhost:8000/api/documents/";
+    let url = `${baseURL}/api/documents/`;
     axios
       .post(url, form_data, {
         headers: {
@@ -43,7 +46,7 @@ const ClientDashBoard = () => {
       .then((res) => {
         console.log(res.data);
         const id = documentRequests[number - 1].id;
-        let url = `http://localhost:8000/api/document_requests/${id}`;
+        let url = `${baseURL}/api/document_requests/${id}`;
         axios.delete(url, {
           headers: {
             "content-type": "application/json",
