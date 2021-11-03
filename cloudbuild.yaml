@@ -32,6 +32,7 @@ steps:
   args: ['gcloud', 'run', 'deploy', 'dfuturereact', 
           '--image=us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/myimage:$SHORT_SHA', 
           '--region', 'us-central1', '--platform', 'managed', 
+          '--env-vars-file', '.env.yaml',
           '--allow-unauthenticated']
 
   # Store images in Google Artifact Registry
